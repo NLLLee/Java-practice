@@ -1,0 +1,22 @@
+169. Majority Element：
+https://leetcode.com/problems/majority-element/description/?envType=study-plan-v2&envId=top-interview-150
+solution:
+class Solution {
+    public int majorityElement(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        return nums[n/2];
+    }
+}
+
+
+58. Length of Last Word
+https://leetcode.com/problems/length-of-last-word/description/?envType=study-plan-v2&envId=top-interview-150
+soultion：
+class Solution {
+    public int lengthOfLastWord(String s) {
+        s=s.trim();
+        String[] words=s.split(" ");
+        return words[words.length-1].length();
+    }
+}
