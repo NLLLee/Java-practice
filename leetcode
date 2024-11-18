@@ -20,3 +20,50 @@ class Solution {
         return words[words.length-1].length();
     }
 }
+
+——————————————————————————————————————————————
+Week 4
+14. Longest Common Prefix
+https://leetcode.com/problems/longest-common-prefix/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        Arrays.sort(strs);
+        String s1 = strs[0];
+        String s2 = strs[strs.length-1];
+        int idx = 0;
+        while(idx < s1.length() && idx < s2.length()){
+            if(s1.charAt(idx) == s2.charAt(idx)){
+                idx++;
+            } else {
+                break;
+            }
+        }
+        return s1.substring(0, idx);
+    }
+}
+
+13. Roman to Integer
+https://leetcode.com/problems/roman-to-integer/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public int romanToInt(String s) {
+        int res = 0;
+        Map<Character, Integer> roman = new HashMap<>();
+        roman.put('I', 1);
+        roman.put('V', 5);
+        roman.put('X', 10);
+        roman.put('L', 50);
+        roman.put('C', 100);
+        roman.put('D', 500);
+        roman.put('M', 1000);
+
+        for (int i = 0; i < s.length() - 1; i++) {
+            if (roman.get(s.charAt(i)) < roman.get(s.charAt(i + 1))) {
+                res -= roman.get(s.charAt(i));
+            } else {
+                res += roman.get(s.charAt(i));
+            }
+        }
+
+        return res + roman.get(s.charAt(s.length() - 1));        
+    }
+}
