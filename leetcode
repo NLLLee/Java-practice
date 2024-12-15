@@ -174,3 +174,55 @@ class Solution {
         return profit;        
     }
 }
+——————————————————————————————————————————————
+Week 8
+27. Remove Element
+https://leetcode.com/problems/remove-element/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int k = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != val) {
+                nums[k] = nums[i];
+                k++;
+            }
+        }
+
+        return k;        
+    }
+}
+
+189. Rotate Array
+https://leetcode.com/problems/rotate-array/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k = k % n;
+        int[] rotated = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            rotated[(i + k) % n] = nums[i];
+        }
+
+        for (int i = 0; i < n; i++) {
+            nums[i] = rotated[i];
+        }        
+    }
+}
+
+55. Jump Game
+https://leetcode.com/problems/jump-game/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public boolean canJump(int[] nums) {
+        int goal = nums.length - 1;
+
+        for (int i = nums.length - 2; i >= 0; i--) {
+            if (i + nums[i] >= goal) {
+                goal = i;
+            }
+        }
+
+        return goal == 0;        
+    }
+}
