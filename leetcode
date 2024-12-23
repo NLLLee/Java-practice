@@ -226,3 +226,46 @@ class Solution {
         return goal == 0;        
     }
 }
+——————————————————————————————————————————————
+Week 9
+45. Jump Game II
+https://leetcode.com/problems/jump-game-ii/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public int jump(int[] nums) {
+        int near = 0, far = 0, jumps = 0;
+
+        while (far < nums.length - 1) {
+            int farthest = 0;
+            for (int i = near; i <= far; i++) {
+                farthest = Math.max(farthest, i + nums[i]);
+            }
+            near = far + 1;
+            far = farthest;
+            jumps++;
+        }
+
+        return jumps;        
+    }
+}
+
+274. H-Index
+https://leetcode.com/problems/h-index/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public int hIndex(int[] citations) {
+        int papers = citations.length;
+        int[] citationBuckets = new int[papers + 1];
+
+        for (int citation : citations) {
+            citationBuckets[Math.min(citation, papers)]++;
+        }
+
+        int cumulativePapers = 0;
+        for (int hIndex = papers; hIndex >= 0; hIndex--) {
+            cumulativePapers += citationBuckets[hIndex];
+            if (cumulativePapers >= hIndex) {
+                return hIndex;
+            }
+        }
+        return 0;        
+    }
+}
