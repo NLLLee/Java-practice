@@ -561,3 +561,51 @@ class Solution {
         return res;        
     }
 }
+
+Week 14
+209. Minimum Size Subarray Sum
+https://leetcode.com/problems/minimum-size-subarray-sum/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int minLen = Integer.MAX_VALUE;
+        int left = 0;
+        int curSum = 0;
+
+        for (int right = 0; right < nums.length; right++) {
+            curSum += nums[right];
+
+            while (curSum >= target) {
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                }
+                curSum -= nums[left];
+                left++;
+            }
+        }
+        
+        return minLen != Integer.MAX_VALUE ? minLen : 0;        
+    }
+}
+
+3. Longest Substring Without Repeating Characters
+https://leetcode.com/problems/longest-substring-without-repeating-characters/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int left = 0;
+        int maxLength = 0;
+        HashSet<Character> charSet = new HashSet<>();
+
+        for (int right = 0; right < s.length(); right++) {
+            while (charSet.contains(s.charAt(right))) {
+                charSet.remove(s.charAt(left));
+                left++;
+            }
+
+            charSet.add(s.charAt(right));
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+
+        return maxLength;       
+    }
+}
+
