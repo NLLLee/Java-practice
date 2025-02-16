@@ -706,3 +706,123 @@ class Solution {
         }        
     }
 }
+
+Week17
+73. Set Matrix Zeroes
+https://leetcode.com/problems/set-matrix-zeroes/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        boolean firstRowHasZero = false;
+        boolean firstColHasZero = false;
+
+        // Check if the first row contains zero
+        for (int c = 0; c < cols; c++) {
+            if (matrix[0][c] == 0) {
+                firstRowHasZero = true;
+                break;
+            }
+        }
+
+        // Check if the first column contains zero
+        for (int r = 0; r < rows; r++) {
+            if (matrix[r][0] == 0) {
+                firstColHasZero = true;
+                break;
+            }
+        }
+
+        // Use the first row and column as markers
+        for (int r = 1; r < rows; r++) {
+            for (int c = 1; c < cols; c++) {
+                if (matrix[r][c] == 0) {
+                    matrix[r][0] = 0;
+                    matrix[0][c] = 0;
+                }
+            }
+        }
+
+        // Set the marked rows to zero
+        for (int r = 1; r < rows; r++) {
+            if (matrix[r][0] == 0) {
+                for (int c = 1; c < cols; c++) {
+                    matrix[r][c] = 0;
+                }
+            }
+        }
+
+        // Set the marked columns to zero
+        for (int c = 1; c < cols; c++) {
+            if (matrix[0][c] == 0) {
+                for (int r = 1; r < rows; r++) {
+                    matrix[r][c] = 0;
+                }
+            }
+        }
+
+        // Set the first row to zero if needed
+        if (firstRowHasZero) {
+            for (int c = 0; c < cols; c++) {
+                matrix[0][c] = 0;
+            }
+        }
+
+        // Set the first column to zero if needed
+        if (firstColHasZero) {
+            for (int r = 0; r < rows; r++) {
+                matrix[r][0] = 0;
+            }
+        }        
+    }
+}
+
+289. Game of Life
+https://leetcode.com/problems/game-of-life/description/?envType=study-plan-v2&envId=top-interview-150
+import java.util.*;
+
+class Solution {
+    public void gameOfLife(int[][] board) {
+        // Define the relative positions of the 8 possible neighbors
+        int[][] directions = {{1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}};
+        
+        int rows = board.length;
+        int cols = board[0].length;
+        
+        // First pass: mark the cells with special values for state changes
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int live = 0;
+                
+                // Count live neighbors
+                for (int[] dir : directions) {
+                    int x = i + dir[0];
+                    int y = j + dir[1];
+                    if (x >= 0 && x < rows && y >= 0 && y < cols && Math.abs(board[x][y]) == 1) {
+                        live++;
+                    }
+                }
+                
+                // Apply rules:
+                if (board[i][j] == 1 && (live < 2 || live > 3)) {
+                    board[i][j] = -1;  // Mark as -1 to indicate the cell was live but now dead
+                }
+                if (board[i][j] == 0 && live == 3) {
+                    board[i][j] = 2;   // Mark as 2 to indicate the cell was dead but now live
+                }
+            }
+        }
+        
+        // Second pass: finalize the state changes
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] > 0) {
+                    board[i][j] = 1;  // Convert cells marked 1 or 2 to live
+                } else {
+                    board[i][j] = 0;  // Convert cells marked -1 or 0 to dead
+                }
+            }
+        }
+    }
+}
