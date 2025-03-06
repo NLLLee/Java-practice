@@ -918,3 +918,41 @@ class Solution {
         return Arrays.equals(sChars, tChars);
     }
 }
+
+Week 20
+https://leetcode.com/problems/group-anagrams/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        
+        for (String word : strs) {
+            char[] chars = word.toCharArray();
+            Arrays.sort(chars);
+            String sortedWord = new String(chars);
+            
+            if (!map.containsKey(sortedWord)) {
+                map.put(sortedWord, new ArrayList<>());
+            }
+            
+            map.get(sortedWord).add(word);
+        }
+        
+        return new ArrayList<>(map.values());
+    }
+}
+
+1. Two Sum
+https://leetcode.com/problems/two-sum/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int n = nums.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (nums[i] + nums[j] == target) {
+                    return new int[]{i, j};
+                }
+            }
+        }
+        return new int[]{}; // No solution found
+    }
+}
