@@ -920,6 +920,7 @@ class Solution {
 }
 
 Week 20
+49. Group Anagrams
 https://leetcode.com/problems/group-anagrams/description/?envType=study-plan-v2&envId=top-interview-150
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
@@ -954,5 +955,54 @@ class Solution {
             }
         }
         return new int[]{}; // No solution found
+    }
+}
+
+Week 21
+202. Happy Number
+https://leetcode.com/problems/happy-number/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public boolean isHappy(int n) {
+        Set<Integer> visit = new HashSet<>();
+        
+        while (!visit.contains(n)) {
+            visit.add(n);
+            n = getNextNumber(n);
+            if (n == 1) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    private int getNextNumber(int n) {
+        int output = 0;
+        
+        while (n > 0) {
+            int digit = n % 10;
+            output += digit * digit;
+            n = n / 10;
+        }
+        
+        return output;
+    }
+}
+
+219. Contains Duplicate II
+https://leetcode.com/problems/contains-duplicate-ii/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Map<Integer, Integer> seen = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int val = nums[i];
+            if (seen.containsKey(val) && i - seen.get(val) <= k) {
+                return true;
+            }
+            seen.put(val, i);
+        }
+
+        return false;        
     }
 }
