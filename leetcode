@@ -1006,3 +1006,58 @@ class Solution {
         return false;        
     }
 }
+
+
+Week 25
+128. Longest Consecutive Sequence
+https://leetcode.com/problems/longest-consecutive-sequence/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> numSet = new HashSet<>();
+        for (int num : nums) {
+            numSet.add(num);
+        }
+
+        int longest = 0;
+
+        for (int num : numSet) {
+            if (!numSet.contains(num - 1)) {
+                int length = 1;
+
+                while (numSet.contains(num + length)) {
+                    length++;
+                }
+
+                longest = Math.max(longest, length);
+            }
+        }
+
+        return longest;        
+    }
+}
+
+228. Summary Ranges
+https://leetcode.com/problems/summary-ranges/description/?envType=study-plan-v2&envId=top-interview-150
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<String> summaryRanges(int[] nums) {
+        List<String> result = new ArrayList<>();
+        if (nums.length == 0) return result;
+
+        int start = nums[0];
+        for (int i = 1; i <= nums.length; i++) {
+            if (i == nums.length || nums[i] != nums[i - 1] + 1) {
+                if (start == nums[i - 1]) {
+                    result.add(String.valueOf(start));
+                } else {
+                    result.add(start + "->" + nums[i - 1]);
+                }
+                if (i < nums.length) start = nums[i];
+            }
+        }
+        return result;
+    }
+}
+
