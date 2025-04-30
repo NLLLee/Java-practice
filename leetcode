@@ -1061,6 +1061,7 @@ class Solution {
     }
 }
 
+Week 26
 56. Merge Intervals
 https://leetcode.com/problems/merge-intervals/description/?envType=study-plan-v2&envId=top-interview-150
 class Solution {
@@ -1107,8 +1108,10 @@ class Solution {
                 current = interval;
             }
         }
-
         res.add(current);
         return res.toArray(new int[res.size()][]);
     }
 }
+
+
+Week 27
