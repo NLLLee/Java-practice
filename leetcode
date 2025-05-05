@@ -707,6 +707,7 @@ class Solution {
     }
 }
 
+——————————————————————————————————————————————
 Week17
 73. Set Matrix Zeroes
 https://leetcode.com/problems/set-matrix-zeroes/description/?envType=study-plan-v2&envId=top-interview-150
@@ -826,7 +827,7 @@ class Solution {
         }
     }
 }
-
+——————————————————————————————————————————————
 Week 18
 383. Ransom Note
 https://leetcode.com/problems/ransom-note/description/?envType=study-plan-v2&envId=top-interview-150
@@ -873,7 +874,7 @@ class Solution {
         return true;        
     }
 }
-
+——————————————————————————————————————————————
 Week 19
 290. Word Pattern
 https://leetcode.com/problems/word-pattern/description/?envType=study-plan-v2&envId=top-interview-150
@@ -918,7 +919,7 @@ class Solution {
         return Arrays.equals(sChars, tChars);
     }
 }
-
+——————————————————————————————————————————————
 Week 20
 49. Group Anagrams
 https://leetcode.com/problems/group-anagrams/description/?envType=study-plan-v2&envId=top-interview-150
@@ -957,7 +958,7 @@ class Solution {
         return new int[]{}; // No solution found
     }
 }
-
+——————————————————————————————————————————————
 Week 21
 202. Happy Number
 https://leetcode.com/problems/happy-number/description/?envType=study-plan-v2&envId=top-interview-150
@@ -1007,7 +1008,7 @@ class Solution {
     }
 }
 
-
+——————————————————————————————————————————————
 Week 25
 128. Longest Consecutive Sequence
 https://leetcode.com/problems/longest-consecutive-sequence/description/?envType=study-plan-v2&envId=top-interview-150
@@ -1060,7 +1061,7 @@ class Solution {
         return result;
     }
 }
-
+——————————————————————————————————————————————
 Week 26
 56. Merge Intervals
 https://leetcode.com/problems/merge-intervals/description/?envType=study-plan-v2&envId=top-interview-150
@@ -1113,5 +1114,110 @@ class Solution {
     }
 }
 
-
+——————————————————————————————————————————————
 Week 27
+452. Minimum Number of Arrows to Burst Balloons
+https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public int findMinArrowShots(int[][] points) {
+        Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
+        long prev = Long.MIN_VALUE;
+        int cnt = 0;
+
+        for (int[] point : points) {
+            if (point[0] > prev) {
+                cnt++;
+                prev = point[1];
+            }
+        }
+
+        return cnt;
+    }
+}
+
+20. Valid Parentheses
+https://leetcode.com/problems/valid-parentheses/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        Map<Character, Character> mapping = new HashMap<>();
+        mapping.put(')', '(');
+        mapping.put('}', '{');
+        mapping.put(']', '[');
+
+        for (char c : s.toCharArray()) {
+            if (mapping.containsValue(c)) {
+                stack.push(c);
+            } else if (mapping.containsKey(c)) {
+                if (stack.isEmpty() || mapping.get(c) != stack.pop()) {
+                    return false;
+                }
+            }
+        }
+
+        return stack.isEmpty();        
+    }
+}
+
+——————————————————————————————————————————————
+Week 27
+71. Simplify Path
+https://leetcode.com/problems/simplify-path/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public String simplifyPath(String path) {
+        String[] components = path.split("/");
+        Stack<String> st = new Stack<>();
+
+        for (String comp : components) {
+            if (comp.equals("") || comp.equals(".")) {
+                continue;
+            }
+
+            if (comp.equals("..")) {
+                if (!st.isEmpty()) {
+                    st.pop();
+                }
+            } else {
+                st.push(comp);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while (!st.isEmpty()) {
+            sb.insert(0, "/" + st.pop());
+        }
+
+        return sb.length() == 0 ? "/" : sb.toString();        
+    }
+}
+
+155. Min Stack
+https://leetcode.com/problems/min-stack/description/?envType=study-plan-v2&envId=top-interview-150
+class MinStack {
+    private List<int[]> st;
+
+    public MinStack() {
+        st = new ArrayList<>();
+    }
+    
+    public void push(int val) {
+        int[] top = st.isEmpty() ? new int[]{val, val} : st.get(st.size() - 1);
+        int min_val = top[1];
+        if (min_val > val) {
+            min_val = val;
+        }
+        st.add(new int[]{val, min_val});        
+    }
+    
+    public void pop() {
+        st.remove(st.size() - 1);
+    }
+    
+    public int top() {
+        return st.isEmpty() ? -1 : st.get(st.size() - 1)[0];
+    }
+    
+    public int getMin() {
+        return st.isEmpty() ? -1 : st.get(st.size() - 1)[1];
+    }
+}
