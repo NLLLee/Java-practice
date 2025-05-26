@@ -1289,3 +1289,98 @@ public int calculate(String s) {
     if(number != 0) result += sign * number;
     return result;
 }
+
+——————————————————————————————————————————————
+Week 30
+141. Linked List Cycle
+https://leetcode.com/problems/linked-list-cycle/description/?envType=study-plan-v2&envId=top-interview-150
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+
+            if (fast == slow) {
+                return true;
+            }
+        }
+
+        return false;        
+    }
+}
+
+2. Add Two Numbers
+https://leetcode.com/problems/add-two-numbers/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    // Add Two Numbers (Java improved)
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummyHead = new ListNode(0);
+        ListNode curr = dummyHead;
+        int carry = 0;
+        while (l1 != null || l2 != null || carry != 0) {
+            int x = (l1 != null) ? l1.val : 0;
+            int y = (l2 != null) ? l2.val : 0;
+            int sum = carry + x + y;
+            carry = sum / 10;
+            curr.next = new ListNode(sum % 10);
+            curr = curr.next;
+            if (l1 != null) l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
+        }
+        return dummyHead.next;
+    }
+}
+
+——————————————————————————————————————————————
+Week 31
+21. Merge Two Sorted Lists
+https://leetcode.com/problems/merge-two-sorted-lists/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode();
+        ListNode cur = dummy;
+
+        while (list1 != null && list2 != null) {
+            if (list1.val > list2.val) {
+                cur.next = list2;
+                list2 = list2.next;
+            } else {
+                cur.next = list1;
+                list1 = list1.next;
+            }
+            cur = cur.next;
+        }
+
+        cur.next = (list1 != null) ? list1 : list2;
+
+        return dummy.next;        
+    }
+}
+
+138. Copy List with Random Pointer
+https://leetcode.com/problems/copy-list-with-random-pointer/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public Node copyRandomList(Node head) {
+        Map<Node, Node> hashMap = new HashMap<>();
+        Node cur = head;
+
+        while (cur != null) {
+            hashMap.put(cur, new Node(cur.val));
+            cur = cur.next;
+        }
+
+        cur = head;
+
+        while (cur != null) {
+            Node copy = hashMap.get(cur);
+            copy.next = hashMap.get(cur.next);
+            copy.random = hashMap.get(cur.random);
+            cur = cur.next;
+        }
+
+        return hashMap.get(head);        
+    }
+}
