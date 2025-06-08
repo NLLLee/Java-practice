@@ -1384,3 +1384,123 @@ class Solution {
         return hashMap.get(head);        
     }
 }
+
+Week 31
+92. Reverse Linked List II
+https://leetcode.com/problems/reverse-linked-list-ii/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (head == null || left == right) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy;
+
+        for (int i = 0; i < left - 1; i++) {
+            prev = prev.next;
+        }
+
+        ListNode cur = prev.next;
+
+        for (int i = 0; i < right - left; i++) {
+            ListNode temp = cur.next;
+            cur.next = temp.next;
+            temp.next = prev.next;
+            prev.next = temp;
+        }
+
+        return dummy.next;        
+    }
+}
+
+19. Remove Nth Node From End of List
+https://leetcode.com/problems/remove-nth-node-from-end-of-list/description/?envType=study-plan-v2&envId=top-interview-150
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode res = new ListNode(0, head);
+        ListNode dummy = res;
+
+        for (int i = 0; i < n; i++) {
+            head = head.next;
+        }
+
+        while (head != null) {
+            head = head.next;
+            dummy = dummy.next;
+        }
+
+        dummy.next = dummy.next.next;
+
+        return res.next;        
+    }
+}
+
+Week 32
+82. Remove Duplicates from Sorted List II
+https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        ListNode dummy = new ListNode(-1); // Dummy node to handle head removals
+        dummy.next = head;
+        ListNode prev = dummy;
+        ListNode cur = head;
+
+        while (cur != null && cur.next != null) {
+            if (cur.val == cur.next.val) {
+                // Skip all nodes with the same value
+                while (cur.next != null && cur.val == cur.next.val) {
+                    cur = cur.next;
+                }
+                prev.next = cur.next; // Remove duplicates
+            } else {
+                prev = prev.next; // Move to next distinct node
+            }
+            cur = cur.next;
+        }
+
+        return dummy.next;
+    }
+}
+
+61. Rotate List
+https://leetcode.com/problems/rotate-list/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        // Edge case: If the list is empty or has only one node
+        if(head == null || head.next == null) return head;
+        
+        // Step 1: Find the length of the linked list
+        ListNode temp = head;
+        int length = 0;
+        while(temp != null) {
+            length++;
+            temp = temp.next;
+        }
+        
+        // Step 2: Calculate the effective rotation using modulo
+        int rotation = k % length;
+
+        // Step 3: Perform the rotation for 'rotation' times
+        for(int i = 0; i < rotation; i++) {
+            ListNode last = head, prev = null;
+            
+            // Step 4: Traverse the list to find the last node
+            while(last.next != null) {
+                prev = last;
+                last = last.next;
+            }
+            
+            // Step 5: Perform the rotation by adjusting pointers
+            last.next = head;
+            prev.next = null;
+            head = last;
+        }
+        
+        return head;
+    }
+}
