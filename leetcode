@@ -1504,3 +1504,257 @@ class Solution {
         return head;
     }
 }
+
+Week 33
+86. Partition List
+https://leetcode.com/problems/partition-list/description/?envType=study-plan-v2&envId=top-interview-150
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode slist = new ListNode();
+        ListNode blist = new ListNode();
+        ListNode small = slist;
+        ListNode big = blist;
+
+        while (head != null) {
+            if (head.val < x) {
+                small.next = head;
+                small = small.next;
+            } else {
+                big.next = head;
+                big = big.next;
+            }
+
+            head = head.next;
+        }
+
+        small.next = blist.next;
+        big.next = null;
+
+        return slist.next;        
+    }
+}
+
+146. LRU Cache
+https://leetcode.com/problems/lru-cache/description/?envType=study-plan-v2&envId=top-interview-150
+class Node {
+    int key;
+    int val;
+    Node prev;
+    Node next;
+
+    public Node(int key, int val) {
+        this.key = key;
+        this.val = val;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+
+class LRUCache {
+
+    private int cap;
+    private Map<Integer, Node> cache;
+    private Node oldest;
+    private Node latest;
+
+    public LRUCache(int capacity) {
+        this.cap = capacity;
+        this.cache = new HashMap<>();
+        this.oldest = new Node(0, 0);
+        this.latest = new Node(0, 0);
+        this.oldest.next = this.latest;
+        this.latest.prev = this.oldest;
+    }
+
+    public int get(int key) {
+        if (cache.containsKey(key)) {
+            Node node = cache.get(key);
+            remove(node);
+            insert(node);
+            return node.val;
+        }
+        return -1;
+    }
+
+    private void remove(Node node) {
+        Node prev = node.prev;
+        Node next = node.next;
+        prev.next = next;
+        next.prev = prev;
+    }
+
+    private void insert(Node node) {
+        Node prev = latest.prev;
+        Node next = latest;
+        prev.next = next.prev = node;
+        node.next = next;
+        node.prev = prev;
+    }
+
+    public void put(int key, int value) {
+        if (cache.containsKey(key)) {
+            remove(cache.get(key));
+        }
+        Node newNode = new Node(key, value);
+        cache.put(key, newNode);
+        insert(newNode);
+
+        if (cache.size() > cap) {
+            Node lru = oldest.next;
+            remove(lru);
+            cache.remove(lru.key);
+        }
+    }
+}
+
+Week 34
+104. Maximum Depth of Binary Tree
+https://leetcode.com/problems/maximum-depth-of-binary-tree/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));        
+    }
+}
+
+100. Same Tree
+https://leetcode.com/problems/same-tree/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        }
+        
+        if (p != null && q != null && p.val == q.val) {
+            return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        }
+        
+        return false;        
+    }
+}
+
+Week 35
+226. Invert Binary Tree
+https://leetcode.com/problems/invert-binary-tree/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        
+        invertTree(root.left);
+        invertTree(root.right);
+        
+        return root;        
+    }
+}
+
+101. Symmetric Tree
+https://leetcode.com/problems/symmetric-tree/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        return isMirror(root.left, root.right);
+    }
+    
+    private boolean isMirror(TreeNode n1, TreeNode n2) {
+        if (n1 == null && n2 == null) {
+            return true;
+        }
+        
+        if (n1 == null || n2 == null) {
+            return false;
+        }
+        
+        return n1.val == n2.val && isMirror(n1.left, n2.right) && isMirror(n1.right, n2.left);
+    }
+}
+
+
+Week 36
+105. Construct Binary Tree from Preorder and Inorder Traversal
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        Deque<Integer> preorderQueue = new ArrayDeque<>();
+        for (int val : preorder) {
+            preorderQueue.offer(val);
+        }
+
+        return build(preorderQueue, inorder);        
+    }
+
+    private TreeNode build(Deque<Integer> preorder, int[] inorder) {
+        if (inorder.length > 0) {
+            int idx = indexOf(inorder, preorder.poll());
+            TreeNode root = new TreeNode(inorder[idx]);
+
+            root.left = build(preorder, Arrays.copyOfRange(inorder, 0, idx));
+            root.right = build(preorder, Arrays.copyOfRange(inorder, idx + 1, inorder.length));
+
+            return root;
+        }
+        return null;
+    }
+
+    private int indexOf(int[] arr, int value) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == value) {
+                return i;
+            }
+        }
+        return -1; // shouldn't happen with valid input
+    }    
+}
+
+106. Construct Binary Tree from Inorder and Postorder Traversal
+https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/description/?envType=study-plan-v2&envId=top-interview-150
+class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        // Call the recursive function with full arrays and return the result
+        return buildTree(inorder, 0, inorder.length - 1, postorder, 0, postorder.length - 1);
+    }
+    
+    private TreeNode buildTree(int[] inorder, int inStart, int inEnd, int[] postorder, int postStart, int postEnd) {
+        // Base case
+        if (inStart > inEnd || postStart > postEnd) {
+            return null;
+        }
+        
+        // Find the root node from the last element of postorder traversal
+        int rootVal = postorder[postEnd];
+        TreeNode root = new TreeNode(rootVal);
+        
+        // Find the index of the root node in inorder traversal
+        int rootIndex = 0;
+        for (int i = inStart; i <= inEnd; i++) {
+            if (inorder[i] == rootVal) {
+                rootIndex = i;
+                break;
+            }
+        }
+        
+        // Recursively build the left and right subtrees
+        int leftSize = rootIndex - inStart;
+        int rightSize = inEnd - rootIndex;
+        root.left = buildTree(inorder, inStart, rootIndex - 1, postorder, postStart, postStart + leftSize - 1);
+        root.right = buildTree(inorder, rootIndex + 1, inEnd, postorder, postEnd - rightSize, postEnd - 1);
+        
+        return root;
+    }
+}
