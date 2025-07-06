@@ -1758,3 +1758,87 @@ class Solution {
         return root;
     }
 }
+
+Week 37
+117. Populating Next Right Pointers in Each Node II
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/description/?envType=study-plan-v2&envId=top-interview-150
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+    
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+    public Node connect(Node root) {
+        if (root == null) return root;
+
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+
+        while (!q.isEmpty()) {
+            int level = q.size();
+            while (level-- > 0) {
+                Node curr = q.poll();
+                if (level != 0) curr.next = q.peek();
+                if (curr.left != null) q.add(curr.left);
+                if (curr.right != null) q.add(curr.right);
+            }
+        }
+
+        return root;
+    }
+}
+
+114. Flatten Binary Tree to Linked List
+https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/?envType=study-plan-v2&envId=top-interview-150
+* Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public void flatten(TreeNode root) {
+        Queue<TreeNode> q = new LinkedList<>();
+        insert(root, q);
+        q.poll(); // skip the original root since we'll relink from it
+        while (!q.isEmpty()) {
+            root.right = q.poll(); // connect to next node
+            root.left = null;      // left should be null in linked list
+            root = root.right;
+        }
+    }
+
+    // Preorder traversal to collect nodes
+    void insert(TreeNode node, Queue<TreeNode> queue) {
+        if (node == null) return;
+        queue.add(node);
+        insert(node.left, queue);
+        insert(node.right, queue);
+    }
+}
+
